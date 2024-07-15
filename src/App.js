@@ -1,9 +1,10 @@
 import './App.css';
+import Header from './Components/Header';
 
 function App() {
     return (
         <>
-            <p className='text-3xl'>Youtube</p>
+            <Header />
         </>
     );
 }
