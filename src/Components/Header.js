@@ -4,11 +4,11 @@ import search from '../assets/search.png';
 import user from '../assets/user.png';
 import React from 'react'
 
-const Header = () => {
+const Header = ({ handleSidebarCollapse }) => {
     return (
-        <div className='flex justify-between items-center px-8 shadow-lg'>
+        <div className='flex justify-between items-center px-8 shadow-lg select-none'>
             {/* Hamburger Menu + Logo */}
-            <div className='flex items-center '>
+            <div className='flex items-center' onClick={() => { handleSidebarCollapse() }} >
                 <span className='p-3 cursor-pointer rounded-full mr-2 ease-in duration-75 hover:bg-gray-200'>
                     <img className="w-4" alt="menu" src={menu} />
                 </span>
@@ -18,7 +18,7 @@ const Header = () => {
             {/* Input + Search Button */}
             <div className='w-1/2 flex justify-center'>
                 <input
-                    className="w-[550px] border border-gray-400 p-4 h-8 rounded-l-full focus:outline-none focus:border-gray-800"
+                    className="w-[550px] border border-gray-400 p-4 h-8 rounded-l-full focus:outline-none focus:border-blue-400 shadow-inner"
                     type="text"
                     placeholder='Search'
                 />
