@@ -2,13 +2,17 @@ import logo from '../assets/youtube-logo.png';
 import menu from '../assets/menu.png';
 import search from '../assets/search.png';
 import user from '../assets/user.png';
-import React from 'react'
+import React from 'react';
+import { useDispatch } from 'react-redux'
+import { sidebarToggle } from '../utils/redux/HeaderSlice'
 
-const Header = ({ handleSidebarCollapse }) => {
+const Header = () => {
+    const dispatch = useDispatch();
+
     return (
         <div className='flex justify-between items-center px-8 shadow-lg select-none'>
             {/* Hamburger Menu + Logo */}
-            <div className='flex items-center' onClick={() => { handleSidebarCollapse() }} >
+            <div className='flex items-center' onClick={() => dispatch(sidebarToggle())} >
                 <span className='p-3 cursor-pointer rounded-full mr-2 ease-in duration-75 hover:bg-gray-200'>
                     <img className="w-4" alt="menu" src={menu} />
                 </span>
