@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import MainContent from './MainContent'
 import { useSelector } from 'react-redux'
+import { Outlet } from 'react-router-dom'
 
 const Body = () => {
     const showSidebar = useSelector((state) => state.HeaderSlice.isSidebarVisible);
@@ -12,7 +12,7 @@ const Body = () => {
                 showSidebar &&
                 <Sidebar />
             }
-            <MainContent />
+            <Outlet />
         </div>
     )
 }
