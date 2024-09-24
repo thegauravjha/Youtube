@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { YOUTUBE_API } from '../../utils/constants';
 import VideoCard from './VideoCard';
 import Shrimmer from '../../utils/Shrimmer';
+import { Link } from 'react-router-dom';
 
 const VideoContainer = () => {
     const [data, setData] = useState(null)
@@ -20,8 +21,10 @@ const VideoContainer = () => {
         data ?
             <div className='flex mt-4 flex-wrap'>
                 {
-                    data.map(item => (
-                        <VideoCard key={item.id} videoData={item} />
+                    data.map(video => (
+                        <Link to={"/watch?v=" + video.id} >
+                        <VideoCard key={video.id} videoData={video} />
+                        </Link>
                     ))
                 }
             </div>

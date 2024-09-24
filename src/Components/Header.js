@@ -5,6 +5,7 @@ import user from '../assets/user.png';
 import React from 'react';
 import { useDispatch } from 'react-redux'
 import { sidebarToggle } from '../utils/redux/HeaderSlice'
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -12,11 +13,13 @@ const Header = () => {
     return (
         <div className='flex justify-between items-center px-8 shadow-lg select-none'>
             {/* Hamburger Menu + Logo */}
-            <div className='flex items-center' onClick={() => dispatch(sidebarToggle())} >
-                <span className='p-3 cursor-pointer rounded-full mr-2 ease-in duration-75 hover:bg-gray-200'>
+            <div className='flex items-center' >
+                <span className='p-3 cursor-pointer rounded-full mr-2 ease-in duration-75 hover:bg-gray-200' 
+                    onClick={() => dispatch(sidebarToggle())}
+                >
                     <img className="w-4" alt="menu" src={menu} />
                 </span>
-                <img className="w-28" alt="logo" src={logo} />
+                <Link to={'/'}><img className="w-28 cursor-pointer" alt="logo" src={logo} /></Link>
             </div>
 
             {/* Input + Search Button */}
