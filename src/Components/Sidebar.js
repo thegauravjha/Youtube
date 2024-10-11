@@ -5,7 +5,7 @@ const Sidebar = () => {
     return (
         <div className='w-52 min-w-52 shadow-md mt-5'>
             <ul className='px-3'>
-                <Link to={'/'}><li className='p-2 hover:bg-gray-100 rounded-lg cursor-pointer'>Home</li></Link>
+                <Link to={'/'}><li className='p-2 hover:bg-gray-100 rounded-lg cursor-pointer'>Home (new)</li></Link>
                 <li className='p-2 hover:bg-gray-100 rounded-lg cursor-pointer'>Shorts</li>
                 <li className='p-2 hover:bg-gray-100 rounded-lg cursor-pointer'>Subscriptions</li>
                 <li className='p-2 hover:bg-gray-100 rounded-lg cursor-pointer'>Youtube Music</li>
