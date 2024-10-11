@@ -8,7 +8,8 @@ const VideoCard = ({ videoData }) => {
 
     return (
         <div className='w-96 m-4'>
-            <img src={thumbnails?.medium.url} alt="thumbnail" className='h-56 rounded-xl' />
+            {/* <img src={thumbnails?.medium.url} alt="thumbnail" className='h-56 rounded-xl' /> */}
+            <img src={'image-placeholder-dark.png'} alt="thumbnail" className='h-56 rounded-xl'/>
             <div className='font-bold mt-2'>
                 {(title.length > 90) ? title.slice(0, 90) + "..." : title}
             </div>
