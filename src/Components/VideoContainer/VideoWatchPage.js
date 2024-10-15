@@ -21,4 +21,4 @@ const VideoWatchPage = () => {
   )
 }
 
-export default VideoWatchPage
+export default VideoWatchPage;
