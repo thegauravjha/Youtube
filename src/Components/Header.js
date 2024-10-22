@@ -3,30 +3,44 @@ import menu from '../assets/menu.png';
 import search from '../assets/search.png';
 import user from '../assets/user.png';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'
-import { sidebarToggle } from '../utils/redux/HeaderSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { sidebarToggle } from '../utils/redux/HeaderSlice';
+import { updateCachedResults } from '../utils/redux/SearchSlice';
 import { Link } from 'react-router-dom';
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
+import useDebounce from '../utils/Custom Hooks/useDebounce';
 
 const Header = () => {
     const dispatch = useDispatch();
     const [seachQuery, setSearchQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const debouncedSearchQuery = useDebounce(seachQuery, 300);
+    const cachedSuggestions = useSelector((state) => state.SearchSlice);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            getSearchSuggestions();
-        }, 200);
-
-        return () => {
-            clearTimeout(timer);
+        if (debouncedSearchQuery.length) {
+            if (cachedSuggestions[debouncedSearchQuery]) {
+                setSuggestions(cachedSuggestions[debouncedSearchQuery][0]);
+            } else {
+                getSearchSuggestions(debouncedSearchQuery);
+            }
         }
-    }, [seachQuery])
+    }, [debouncedSearchQuery])
 
-    const getSearchSuggestions = async () => {
-        const data = await fetch(YOUTUBE_SEARCH_API + seachQuery);
-        const json = await data.json();
-        setSuggestions(json[1])
+    const getSearchSuggestions = async (query) => {
+        try {
+            const data = await fetch(YOUTUBE_SEARCH_API + query);
+            const json = await data.json();
+            if (json[1]) {
+                setSuggestions(json[1])
+                dispatch(updateCachedResults({
+                    [query]: [json[1]]
+                }))
+            }
+        } catch (error) {
+            console.log("ERROR FETCHING getSearchSuggestions API : ", error);
+        }
     }
 
     function handleSuggestionClicked(e) {
@@ -53,7 +67,9 @@ const Header = () => {
                             className="w-[550px] border border-gray-400 p-4 h-8 rounded-l-full focus:outline-none focus:border-blue-400 shadow-inner"
                             type="text"
                             placeholder='Search'
-                            onKeyUp={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onFocus={() => setShowSuggestions(true)}
+                            onBlur={() => setShowSuggestions(false)}
                         />
                         <button className='w-12 border border-gray-400 bg-gray-200 hover:bg-gray-300 px-2 h-[34px] rounded-r-full'>
                             <img className=' w-4' src={search} alt="search" />
@@ -61,16 +77,18 @@ const Header = () => {
 
                     </div>
                     {
-                        suggestions.length > 0 &&
-                        <div className='fixed bg-white mt-2 rounded-lg w-[550px] shadow-lg border border-gray-200'>
+                        suggestions.length > 0 && showSuggestions &&
+                        <div className='absolute bg-white mt-2 rounded-lg w-[550px] shadow-lg border border-gray-200'>
                             <ul>
                                 {
                                     suggestions.map((suggestion, index) => (
-                                        <li 
-                                        key={index} 
-                                        className='py-1 px-5 cursor-pointer hover:bg-gray-300' 
-                                        onClick={(e)=>handleSuggestionClicked(e)}
-                                        >{suggestion}</li>
+                                        <li
+                                            key={index}
+                                            className='py-1 px-5 cursor-pointer hover:bg-gray-300'
+                                            onClick={(e) => handleSuggestionClicked(e)}
+                                        >
+                                            {suggestion}
+                                        </li>
                                     ))
                                 }
                             </ul>
